@@ -4,7 +4,7 @@ Session::CheckLogin();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
-  $register = $users->userRegistration($_POST);
+  $register = $users->PassengerRegistration($_POST);
 }
 
 if (isset($register)) {
@@ -14,7 +14,7 @@ if (isset($register)) {
 
  ?>
 
-
+<div class="container">
  <div class="card ">
    <div class="card-header">
           <h3 class='text-center'>Passenger Registration</h3>
@@ -27,12 +27,12 @@ if (isset($register)) {
 
             <form class="" action="" method="post">
                 <div class="form-group pt-3">
-                  <label for="name">Your name</label>
-                  <input type="text" name="name"  class="form-control">
-                </div>
-                <div class="form-group">
-                  <label for="username">Your username</label>
-                  <input type="text" name="username"  class="form-control">
+                  <label for="fname">First Name</label>
+                  <input type="text" name="fname"  class="form-control">
+                  <label for="lname">Last Name </label>
+                  <input type="text" name="lname"  class="form-control">
+                  <label for="mi">Middle Initial </label>
+                  <input type="text" name="mi"  class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="email">Email address</label>
@@ -45,8 +45,14 @@ if (isset($register)) {
                 <div class="form-group">
                   <label for="password">Password</label>
                   <input type="password" name="password" class="form-control">
-                  <input type="hidden" name="roleid" value="3" class="form-control">
+                  <input type="hidden" name="roleid" value="4" class="form-control">
                 </div>
+                <input type="hidden" name="isActive" value="1" >
+                <div class="form-group">
+                <label for="password">Upload Valid ID</label><br>
+                  <input type="file" id="inputImage" Name="photo">
+                </div>
+                <br>
                 <div class="form-group">
                   <button type="submit" name="register" class="btn btn-success">Register</button>
                 </div>
@@ -58,7 +64,7 @@ if (isset($register)) {
 
         </div>
       </div>
-
+  </div>
 
 
   <?php

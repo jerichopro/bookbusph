@@ -4,7 +4,7 @@ Session::CheckLogin();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
-  $register = $users->userRegistration($_POST);
+  $register = $users->BusCompRegistration($_POST);
 }
 
 if (isset($register)) {
@@ -13,8 +13,7 @@ if (isset($register)) {
 
 
  ?>
-
-
+<div class="container">
  <div class="card ">
    <div class="card-header">
           <h3 class='text-center'>Bus Company Registration</h3>
@@ -27,12 +26,12 @@ if (isset($register)) {
 
             <form class="" action="" method="post">
                 <div class="form-group pt-3">
-                  <label for="name">Your name</label>
-                  <input type="text" name="name"  class="form-control">
+                  <label for="BusCompanyName">Company Name</label>
+                  <input type="text" name="BusCompanyName"  class="form-control">
                 </div>
                 <div class="form-group">
-                  <label for="username">Your username</label>
-                  <input type="text" name="username"  class="form-control">
+                  <label for="address">Address</label>
+                  <input type="text" name="address"  class="form-control">
                 </div>
                 <div class="form-group">
                   <label for="email">Email address</label>
@@ -48,6 +47,11 @@ if (isset($register)) {
                   <input type="hidden" name="roleid" value="2" class="form-control">
                 </div>
                 <div class="form-group">
+                <label for="password">Upload Business Permit</label><br>
+                  <input type="file" id="inputImage" Name="photo">
+                </div>
+                <br>
+                <div class="form-group">
                   <button type="submit" name="register" class="btn btn-success">Register</button>
                 </div>
 
@@ -58,7 +62,7 @@ if (isset($register)) {
 
         </div>
       </div>
-
+    </div>
 
 
   <?php

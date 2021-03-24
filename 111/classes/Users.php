@@ -27,6 +27,7 @@ class Users{
   // Check Exist Email Address Method
   public function checkExistEmail($email){
     $sql = "SELECT email from  tbl_users WHERE email = :email";
+
     $stmt = $this->db->pdo->prepare($sql);
     $stmt->bindValue(':email', $email);
      $stmt->execute();
@@ -36,29 +37,48 @@ class Users{
       return false;
     }
   }
-
+  // Check Exist Passenger
+  public function checkExistPassenger($email){
+    $sql = "SELECT email from  tbl_passenger WHERE email = :email";
+    $stmt = $this->db->pdo->prepare($sql);
+    $stmt->bindValue(':email', $email);
+     $stmt->execute();
+    if ($stmt->rowCount()> 0) {
+      return true;
+    }else{
+      return false;
+    }
+  }
+ // Check Exist buscompany
+ public function checkExistBusCompany($email){
+  $sql = "SELECT email from  tbl_passenger WHERE email = :email";
+  $stmt = $this->db->pdo->prepare($sql);
+  $stmt->bindValue(':email', $email);
+   $stmt->execute();
+  if ($stmt->rowCount()> 0) {
+    return true;
+  }else{
+    return false;
+  }
+}
 
 
   // User Registration Method
-  public function userRegistration($data){
-    $name = $data['name'];
-    $username = $data['username'];
+  public function BusCompRegistration($data){
+    $BusCompanyName = $data['BusCompanyName'];
     $email = $data['email'];
+    $address = $data['address'];
     $mobile = $data['mobile'];
     $roleid = $data['roleid'];
     $password = $data['password'];
 
     $checkEmail = $this->checkExistEmail($email);
+    $checkbus = $this->checkExistBusCompany($email);
 
-    if ($name == "" || $username == "" || $email == "" || $mobile == "" || $password == "") {
+    if ($BusCompanyName == "" || $address == "" || $email == "" || $mobile == "" || $password == "") {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Please, User Registration field must not be Empty !</div>';
-        return $msg;
-    }elseif (strlen($username) < 3) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Username is too short, at least 3 Characters !</div>';
         return $msg;
     }elseif (filter_var($mobile,FILTER_SANITIZE_NUMBER_INT) == FALSE) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -91,17 +111,27 @@ class Users{
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Email already Exists, please try another Email... !</div>';
         return $msg;
+    }elseif ($checkbus == TRUE) {
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Email already Exists, please try another Email... !</div>';
+        return $msg;
     }else{
 
-      $sql = "INSERT INTO tbl_users(name, username, email, password, mobile, roleid) VALUES(:name, :username, :email, :password, :mobile, :roleid)";
+      $sql = "INSERT INTO tbl_users(email, password,roleid) VALUES(:email, :password, :roleid)";
       $stmt = $this->db->pdo->prepare($sql);
-      $stmt->bindValue(':name', $name);
-      $stmt->bindValue(':username', $username);
       $stmt->bindValue(':email', $email);
       $stmt->bindValue(':password', SHA1($password));
-      $stmt->bindValue(':mobile', $mobile);
       $stmt->bindValue(':roleid', $roleid);
       $result = $stmt->execute();
+
+      $sql = "INSERT INTO tbl_buscompany(BusCompanyName, address, mobile ) VALUES(:BusCompanyName, :address, :mobile)";
+      $stmt = $this->db->pdo->prepare($sql);
+      $stmt->bindValue(':BusCompanyName', $BusCompanyName);
+      $stmt->bindValue(':address', $address);
+      $stmt->bindValue(':mobile', $mobile);
+      $result = $stmt->execute();
+
       if ($result) {
         $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -119,7 +149,98 @@ class Users{
     }
 
 
+    
 
+
+  }
+  
+  public function PassengerRegistration($data){
+    $lname = $data['lname'];
+    $fname = $data['fname'];
+    $mi = $data['mi'];
+    $email = $data['email'];
+    $mobile = $data['mobile'];
+    $roleid = $data['roleid'];
+    $isActive = $data['isActive'];
+    $password = $data['password'];
+    $checkEmail = $this->checkExistEmail($email);
+    $checkpass = $this->checkExistPassenger($email);
+
+    if ($lname == ""  || $fname == ""  || $mi == ""  || $email == "" || $mobile == "" || $password == "") {
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Please, User Registration field must not be Empty !</div>';
+        return $msg;
+    }elseif (filter_var($mobile,FILTER_SANITIZE_NUMBER_INT) == FALSE) {
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Enter only Number Characters for Mobile number field !</div>';
+        return $msg;
+    }elseif(strlen($password) < 5) {
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Password at least 6 Characters !</div>';
+        return $msg;
+    }elseif(!preg_match("#[0-9]+#",$password)) {
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Your Password Must Contain At Least 1 Number !</div>';
+        return $msg;
+    }elseif(!preg_match("#[a-z]+#",$password)) {
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Your Password Must Contain At Least 1 Number !</div>';
+        return $msg;
+    }elseif (filter_var($email, FILTER_VALIDATE_EMAIL === FALSE)) {
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Invalid email address !</div>';
+        return $msg;
+    }elseif ($checkEmail == TRUE) {
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Email already Exists, please try another Email... !</div>';
+        return $msg;
+    }elseif ($checkpass == TRUE) {
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Email already Exists, please try another Email... !</div>';
+        return $msg;
+    }else{
+
+      $sql = "INSERT INTO tbl_users(email, password, roleid, isActive) VALUES(:email, :password, :roleid, :isActive)";
+      $stmt = $this->db->pdo->prepare($sql);
+      $stmt->bindValue(':email', $email);
+      $stmt->bindValue(':password', SHA1($password));
+      $stmt->bindValue(':roleid', $roleid);
+      $stmt->bindValue(':isActive', $isActive);
+      $result = $stmt->execute();
+
+      $sql = "INSERT INTO tbl_passenger(lname, fname, mi, mobile, email) VALUES(:lname, :fname, :mi, :mobile, :email)";
+      $stmt = $this->db->pdo->prepare($sql);
+      $stmt->bindValue(':lname', $lname);
+      $stmt->bindValue(':fname', $fname);
+      $stmt->bindValue(':mi', $mi);
+      $stmt->bindValue(':mobile', $mobile);
+      $stmt->bindValue(':email', $email);
+      $result = $stmt->execute();
+
+
+      if ($result) {
+        $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Success !</strong> Wow, you have Registered Successfully !</div>';
+          return $msg;
+      }else{
+        $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Error !</strong> Something went Wrong !</div>';
+          return $msg;
+      }
+
+
+
+    }
 
 
   }
@@ -241,7 +362,7 @@ class Users{
     $stmt = $this->db->pdo->prepare($sql);
     $stmt->bindValue(':email', $email);
     $stmt->bindValue(':password', $password);
-    $stmt->execute();
+    $stmt->execute();     
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
   // Check User Account Satatus
@@ -290,7 +411,7 @@ class Users{
         if ($chkActive == TRUE) {
           $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Sorry, Your account is Diactivated, Contact with Admin !</div>';
+    <strong>Error !</strong> Sorry, Your account is not yet Activated, Contact with the Admin !</div>';
             return $msg;
         }elseif ($logResult) {
 
@@ -322,7 +443,7 @@ class Users{
 
     // Get Single User Information By Id Method
     public function getUserInfoById($userid){
-      $sql = "SELECT * FROM tbl_users WHERE id = :id LIMIT 1";
+      $sql = "SELECT * FROM tbl_passenger WHERE id = :id LIMIT 1";
       $stmt = $this->db->pdo->prepare($sql);
       $stmt->bindValue(':id', $userid);
       $stmt->execute();

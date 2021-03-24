@@ -1,6 +1,6 @@
 
-.<?php
-include 'inc/header.php';
+<?php include 'inc/header.php';
+
 
 Session::CheckSession();
 
@@ -14,8 +14,6 @@ if (isset($msg)) {
 }
 Session::set("msg", NULL);
 Session::set("logMsg", NULL);
-
-
 ?>
 <!-- redirect to admin -->
 <?php if (Session::get('id') == TRUE) { ?>
@@ -52,9 +50,9 @@ if (isset($activeId)) {
           <h3><i class="fas fa-users mr-2"></i>User list <span class="float-right">Welcome! <strong>
             <span class="badge badge-lg badge-secondary text-white">
 <?php
-$username = Session::get('username');
-if (isset($username)) {
-  echo $username;
+$email = Session::get('email');
+if (isset($email)) {
+  echo $email;
 }
  ?></span>
 
@@ -65,11 +63,9 @@ if (isset($username)) {
           <table id="example" class="table table-striped table-bordered" style="width:100%">
                   <thead>
                     <tr>
-                      <th  class="text-center">SL</th>
-                      <th  class="text-center">Name</th>
-                      <th  class="text-center">Username</th>
+                      <th  class="text-center">No</th>
+                      <th  class="text-center">Role</th>
                       <th  class="text-center">Email address</th>
-                      <th  class="text-center">Mobile</th>
                       <th  class="text-center">Status</th>
                       <th  class="text-center">Created</th>
                       <th  width='25%' class="text-center">Action</th>
@@ -85,7 +81,7 @@ if (isset($username)) {
                         foreach ($allUser as  $value) {
                           $i++;
 
-                     ?>
+                     ?> 
 
                       <tr class="text-center"
                       <?php if (Session::get("id") == $value->id) {
@@ -94,23 +90,25 @@ if (isset($username)) {
                       >
 
                         <td><?php echo $i; ?></td>
-                        <td><?php echo $value->name; ?></td>
-                        <td><?php echo $value->username; ?> <br>
+
+                        <td><?php  ?> <br>
                           <?php if ($value->roleid  == '1'){
                           echo "<span class='badge badge-lg badge-info text-white'>Admin</span>";
                         } elseif ($value->roleid == '2') {
-                          echo "<span class='badge badge-lg badge-dark text-white'>Editor</span>";
+                          echo "<span class='badge badge-lg badge-dark text-white'>Bus Company</span>";
                         }elseif ($value->roleid == '3') {
-                            echo "<span class='badge badge-lg badge-dark text-white'>User Only</span>";
-                        } ?></td>
+                            echo "<span class='badge badge-lg badge-dark text-white'>Employee</span>";
+                        }elseif ($value->roleid == '4') {
+                          echo "<span class='badge badge-lg badge-dark text-white'>Passenger</span>";
+                      } ?></td>
                         <td><?php echo $value->email; ?></td>
 
-                        <td><span class="badge badge-lg badge-secondary text-white"><?php echo $value->mobile; ?></span></td>
+                        
                         <td>
                           <?php if ($value->isActive == '0') { ?>
                           <span class="badge badge-lg badge-info text-white">Active</span>
                         <?php }else{ ?>
-                    <span class="badge badge-lg badge-danger text-white">Deactive</span>
+                    <span class="badge badge-lg badge-danger text-white">InActive</span>
                         <?php } ?>
 
                         </td>
@@ -195,7 +193,6 @@ if (isset($username)) {
             <?php  } }?>
 
 
-  <?php
-  include 'inc/footer.php';
+            
 
-  ?>
+<?php include 'inc/footer.php';?>
