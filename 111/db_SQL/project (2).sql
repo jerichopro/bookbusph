@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2021 at 05:21 AM
+-- Generation Time: Mar 24, 2021 at 08:48 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -31,13 +31,21 @@ SET time_zone = "+00:00";
 CREATE TABLE `tbl_buscompany` (
   `BusCompID` bigint(20) NOT NULL,
   `BusCompanyName` varchar(250) NOT NULL,
-  `Addresss` varchar(250) NOT NULL,
-  `Telephone` varchar(50) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `mobile` varchar(50) NOT NULL,
   `IsActive` char(1) NOT NULL,
   `DateRegistered` datetime NOT NULL,
   `DateApproved` datetime NOT NULL,
   `UserID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_buscompany`
+--
+
+INSERT INTO `tbl_buscompany` (`BusCompID`, `BusCompanyName`, `address`, `mobile`, `IsActive`, `DateRegistered`, `DateApproved`, `UserID`) VALUES
+(1, 'PRO', 'Bucawe', '9358627694', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
+(2, 'PRO', 'Bucawe', '9358627694', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -126,11 +134,8 @@ INSERT INTO `tbl_roles` (`id`, `role`) VALUES
 
 CREATE TABLE `tbl_users` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `mobile` varchar(25) DEFAULT NULL,
   `roleid` tinyint(4) DEFAULT NULL,
   `isActive` tinyint(4) DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -141,10 +146,11 @@ CREATE TABLE `tbl_users` (
 -- Dumping data for table `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`, `roleid`, `isActive`, `created_at`, `updated_at`) VALUES
-(23, 'jericho', 'jerichopro', 'jerichoprowtf@gmail.com', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', '09358627694', 1, 0, '2020-12-19 14:35:56', '2020-12-19 14:35:56'),
-(29, 'ana', 'anapacay', 'anapacay@gmail.com', 'c53255317bb11707d0f614696b3ce6f221d0e2f2', '09193680914', 2, 0, '2021-03-17 00:15:03', '2021-03-17 00:15:03'),
-(30, 'edgardo', 'edpacay', 'edgardopacay@gmail.com', 'c53255317bb11707d0f614696b3ce6f221d0e2f2', '09193680914', 3, 0, '2021-03-17 00:15:26', '2021-03-17 00:15:26');
+INSERT INTO `tbl_users` (`id`, `email`, `password`, `roleid`, `isActive`, `created_at`, `updated_at`) VALUES
+(1, 'jerichoprowtf@gmail.com', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', 1, 0, '2020-12-19 14:35:56', '2020-12-19 14:35:56'),
+(21, 'manilynpacay@gmail.com', 'c53255317bb11707d0f614696b3ce6f221d0e2f2', 4, 1, '2021-03-24 04:38:07', '2021-03-24 04:38:07'),
+(22, 'jefflaguna@gmail.com', 'c53255317bb11707d0f614696b3ce6f221d0e2f2', 4, 0, '2021-03-24 05:16:26', '2021-03-24 05:16:26'),
+(23, 'jerichoprowtf11@gmail.com', 'c53255317bb11707d0f614696b3ce6f221d0e2f2', 2, 0, '2021-03-24 06:45:44', '2021-03-24 06:45:44');
 
 --
 -- Indexes for dumped tables
@@ -198,7 +204,7 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_buscompany`
 --
 ALTER TABLE `tbl_buscompany`
-  MODIFY `BusCompID` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `BusCompID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_buses`
@@ -228,7 +234,7 @@ ALTER TABLE `tbl_roles`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
